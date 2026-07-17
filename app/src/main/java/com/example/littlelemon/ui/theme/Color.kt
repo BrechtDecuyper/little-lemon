@@ -2,10 +2,11 @@ package com.example.littlelemon.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val PRIM_Green = Color(0xFF495E57)
+val PRIM_Yellow = Color(0XFFF4CE14)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val SEC_Orange = Color(0xFFEE9972)
+val SEC_Beige = Color(0XFFFBDABB)
+
+val HGL_White = Color(0xFFEDEFEE)
+val HGL_Black = Color(0xFF333333)
