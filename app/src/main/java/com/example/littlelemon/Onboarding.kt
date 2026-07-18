@@ -7,10 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -71,88 +69,104 @@ fun Onboarding(navController: NavController) {
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .background(MaterialTheme.colorScheme.background),
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth().height(100.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .aspectRatio(1f),
-            )
-        }
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primary)
-                .padding(vertical = 40.dp),
-            text = "Let's get to know you",
-            color = MaterialTheme.colorScheme.onPrimary,
-            fontSize = 20.sp,
-            textAlign = TextAlign.Center
-        )
-
+    Scaffold(
+        topBar = { Header() },
+        bottomBar = { SubmitFooter(::submitForm) }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 15.dp, end = 15.dp, bottom = 30.dp)
+                .padding(innerPadding)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             Text(
-                text = "Personal information",
-                fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier.padding(vertical = 40.dp)
-            )
-            OutlinedTextField(
-                value = firstName,
-                onValueChange = {firstName = it},
-                label = {Text("First name")},
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp),
+                    .background(MaterialTheme.colorScheme.primary)
+                    .padding(vertical = 40.dp),
+                text = "Let's get to know you",
+                color = MaterialTheme.colorScheme.onPrimary,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
             )
-            OutlinedTextField(
-                value = lastName,
-                onValueChange = {lastName = it},
-                label = {Text("Last name")},
+
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-            )
-            OutlinedTextField(
-                value = email,
-                onValueChange = {email = it},
-                label = {Text("Email")},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-            )
+                    .padding(start = 15.dp, end = 15.dp, bottom = 30.dp)
+            ) {
+                Text(
+                    text = "Personal information",
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(vertical = 40.dp)
+                )
+                OutlinedTextField(
+                    value = firstName,
+                    onValueChange = {firstName = it},
+                    label = {Text("First name")},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                )
+                OutlinedTextField(
+                    value = lastName,
+                    onValueChange = {lastName = it},
+                    label = {Text("Last name")},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                )
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = {email = it},
+                    label = {Text("Email")},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                )
+            }
         }
-        Spacer(modifier = Modifier.weight(1f))
-        Button(
-            onClick = {submitForm()},
+    }
+}
+
+@Composable
+private fun Header() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .background(MaterialTheme.colorScheme.background)
+            .height(100.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Logo",
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 15.dp, end = 15.dp, bottom = 15.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
-            shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
-        ) {
-            Text(
-                text = "Register",
-                color = MaterialTheme.colorScheme.onSecondary,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-            )
-        }
+                .fillMaxWidth(0.5f)
+                .aspectRatio(1f),
+        )
+    }
+}
+
+@Composable
+private fun SubmitFooter(submitForm: () -> Unit) {
+    Button(
+        onClick = submitForm,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 15.dp, end = 15.dp, bottom = 15.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
+    ) {
+        Text(
+            text = "Register",
+            color = MaterialTheme.colorScheme.onSecondary,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+        )
     }
 }
 
