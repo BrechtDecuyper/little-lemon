@@ -37,8 +37,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.littlelemon.ui.theme.HGL_Black
-import com.example.littlelemon.ui.theme.Karla
 import com.example.littlelemon.ui.theme.LittleLemonTheme
 
 @Composable

@@ -5,14 +5,11 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -32,8 +29,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.littlelemon.ui.theme.LittleLemonTheme
-import com.example.littlelemon.ui.theme.PRIM_Yellow
-import kotlin.math.log
 
 @Composable
 fun Profile(navController: NavController) {
@@ -117,7 +112,7 @@ private fun LogoutFooter(logout: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 15.dp, end = 15.dp, bottom = 15.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = PRIM_Yellow),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
     ) {
