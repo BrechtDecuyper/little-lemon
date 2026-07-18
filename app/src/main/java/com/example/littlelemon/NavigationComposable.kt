@@ -18,10 +18,10 @@ fun Navigation(navController: NavHostController) {
         startDestination = if (hasUserData) DestOnboarding.route else DestHome.route
     ) {
         composable(DestHome.route) {
-            Home()
+            Home(navController)
         }
         composable(DestProfile.route) {
-            Profile()
+            Profile(navController)
         }
         composable(DestOnboarding.route) {
             Onboarding(navController)

@@ -17,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.littlelemon.ui.theme.LittleLemonTheme
+import com.example.littlelemon.ui.theme.PRIM_Yellow
 
 @Composable
 fun Onboarding(navController: NavController) {
@@ -71,13 +74,13 @@ fun Onboarding(navController: NavController) {
 
     Scaffold(
         topBar = { Header() },
-        bottomBar = { SubmitFooter(::submitForm) }
+        bottomBar = { SubmitFooter({ submitForm() }) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(innerPadding)
                 .background(MaterialTheme.colorScheme.background)
+                .padding(innerPadding)
         ) {
             Text(
                 modifier = Modifier
@@ -98,7 +101,8 @@ fun Onboarding(navController: NavController) {
                 Text(
                     text = "Personal information",
                     fontWeight = FontWeight.ExtraBold,
-                    modifier = Modifier.padding(vertical = 40.dp)
+                    modifier = Modifier.padding(vertical = 40.dp),
+                    color = Color.Black,
                 )
                 OutlinedTextField(
                     value = firstName,
@@ -107,6 +111,7 @@ fun Onboarding(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
+                    colors = OutlinedTextFieldDefaults.colors(unfocusedTextColor = MaterialTheme.colorScheme.onSecondary, focusedTextColor = MaterialTheme.colorScheme.primary),
                 )
                 OutlinedTextField(
                     value = lastName,
@@ -115,6 +120,7 @@ fun Onboarding(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
+                    colors = OutlinedTextFieldDefaults.colors(unfocusedTextColor = MaterialTheme.colorScheme.onSecondary, focusedTextColor = MaterialTheme.colorScheme.primary),
                 )
                 OutlinedTextField(
                     value = email,
@@ -123,6 +129,7 @@ fun Onboarding(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
+                    colors = OutlinedTextFieldDefaults.colors(unfocusedTextColor = MaterialTheme.colorScheme.onSecondary, focusedTextColor = MaterialTheme.colorScheme.primary),
                 )
             }
         }
@@ -157,7 +164,7 @@ private fun SubmitFooter(submitForm: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 15.dp, end = 15.dp, bottom = 15.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+        colors = ButtonDefaults.buttonColors(containerColor = PRIM_Yellow),
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
     ) {
@@ -174,7 +181,9 @@ private fun SubmitFooter(submitForm: () -> Unit) {
 @Composable
 fun OnboardingPreview() {
     val navController = rememberNavController()
-    LittleLemonTheme {
+    LittleLemonTheme(
+        dynamicColor = false
+    ) {
         Onboarding(navController)
     }
 }
