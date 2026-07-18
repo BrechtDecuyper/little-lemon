@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -92,21 +93,19 @@ fun Profile(navController: NavController) {
 
 @Composable
 private fun Header() {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .statusBarsPadding()
             .background(MaterialTheme.colorScheme.background)
-            .height(100.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .padding(15.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(R.drawable.logo),
             contentDescription = "Logo",
             modifier = Modifier
+                .height(50.dp)
                 .fillMaxWidth(0.5f)
-                .aspectRatio(1f),
+                .align(Alignment.Center)
         )
     }
 }
