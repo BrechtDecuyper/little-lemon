@@ -2,11 +2,14 @@ package com.example.littlelemon
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,14 +17,27 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,8 +68,7 @@ fun Home(navController: NavController, database: AppDatabase) {
                 .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding),
         ) {
-            HeroSection()
-            MenuItemsSection(menuItemsList)
+            HeroSection(menuItemsList)
         }
     }
 }
@@ -88,7 +103,17 @@ private fun Header(action: () -> Unit) {
 }
 
 @Composable
-fun HeroSection() {
+fun HeroSection(itemList: List<MenuItem>) {
+    var searchPhrase by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf<String?>(null) }
+
+    val menuItems = itemList.filter { item ->
+        val matchesSearch = item.title.contains(searchPhrase, ignoreCase = true)
+        val matchesCategory = selectedCategory == null || item.category.equals(selectedCategory, ignoreCase = true)
+
+        matchesSearch && matchesCategory
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -133,7 +158,82 @@ fun HeroSection() {
                 contentScale = ContentScale.Crop
             )
         }
+        TextField(
+            value = searchPhrase,
+            onValueChange = {
+                searchPhrase = it
+            },
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.background,
+                unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                focusedTextColor = MaterialTheme.colorScheme.onSecondary,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSecondary
+            ),
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(10.dp),
+            textStyle = MaterialTheme.typography.bodyMedium,
+            placeholder = {
+                Text(
+                    stringResource(R.string.search_phrase),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = ""
+                )
+            }
+        )
     }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp)
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        val scrollState = rememberScrollState()
+
+        Text(
+            text = "ORDER FOR DELIVERY",
+            modifier = Modifier.padding(top = 15.dp, bottom = 15.dp),
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 20.sp
+        )
+
+        val categories = itemList.map { it.category }.distinct().sorted()
+
+        Row(
+            modifier = Modifier
+                .padding(bottom = 15.dp)
+                .fillMaxWidth()
+                .horizontalScroll(scrollState),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            categories.forEach { category ->
+                Button(
+                    onClick = {
+                        selectedCategory = category
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.onPrimary)
+                ) {
+                    Text(
+                        text = category.replaceFirstChar(Char::uppercase),
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+    }
+    HorizontalDivider(
+        thickness = 3.dp,
+        color = MaterialTheme.colorScheme.onPrimary
+    )
+
+    MenuItemsSection(menuItems)
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -150,7 +250,7 @@ fun MenuItemsSection(items: List<MenuItem>) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp)
+                        .padding(vertical = 10.dp, horizontal = 15.dp)
                 ) {
                     Column(
                         modifier = Modifier.weight(1f)
@@ -185,6 +285,11 @@ fun MenuItemsSection(items: List<MenuItem>) {
                         }
                     )
                 }
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color(0xFF888888),
+                    modifier = Modifier.padding(horizontal = 15.dp)
+                )
             }
         )
     }
@@ -207,8 +312,7 @@ fun HomePreview() {
                     .background(MaterialTheme.colorScheme.background)
                     .padding(innerPadding),
             ) {
-                HeroSection()
-                MenuItemsSection(listOf(
+                HeroSection(listOf(
                     MenuItem(1, "Greek Salad", "The famous greek salad of crispy lettuce, peppers, olives, our Chicago.",
                         "12.99", "https://github.com/Meta-Mobile-Developer-PC/Working-With-Data-API/blob/main/images/greekSalad.jpg?raw=true", "Starters"),
                     MenuItem(2, "Lemon Desert", "Traditional homemade Italian Lemon Ricotta Cake.",

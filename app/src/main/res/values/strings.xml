@@ -3,4 +3,5 @@
     <string name="restaurant_name">Little Lemon</string>
     <string name="location">Chicago</string>
     <string name="short_description">We are a family-owned Mediterranean restaurant, focused on traditional recipes served with a modern twist</string>
+    <string name="search_phrase">Enter search phrase</string>
 </resources>
